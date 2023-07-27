@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String   @db.VarChar(255)
+  token      String   @db.VarChar(255)
+  first_name String   @db.VarChar(255)
+  last_name  String   @db.VarChar(255)
+  full_name  String?  @db.VarChar(255)
+  picture    String?  @db.VarChar(255)
+  roles      Json?    @db.Json()
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Customer {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  first_name String?   @db.VarChar(255)
+  last_name  String?  @db.VarChar(255)
+  address    String?  @db.VarChar(255)
+  zip        Int?
+  city       String?  @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Suplier {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(255)
+  address    String?  @db.VarChar(255)
+  zip        Int?
+  city       String?  @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Product    Product?
+}
+
+model Product {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(255)
+  description  String?   @db.VarChar(255)
+  price        Float
+  suplier      Suplier   @relation(fields: [suplier_id], references: [id])
+  suplier_id   Int       @unique
+  packages     Package[] 
+  inventories  Inventory[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+model Inventory {
+  id           Int       @id @default(autoincrement())
+  name         String    @db.VarChar(255)
+  description  String?   @db.VarChar(255)
+  cost         Float
+  qty          Float
+  min_qty      Float
+  warehouse    Warehouse @relation(fields: [warehouse_id], references: [id])
+  warehouse_id Int       @unique
+  product      Product @relation(fields: [product_id], references: [id])
+  product_id Int
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+}
+
+model Warehouse {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique
+  address    String?    @db.VarChar(255)
+  zip        Int?
+  city       String?    @db.VarChar(255)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  inventory  Inventory?
+}
+
+model Package {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(255)
+  description String?   @db.VarChar(255)
+  product     Product   @relation(fields: [product_id], references: [id])
+  product_id   Int      @default(1)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}

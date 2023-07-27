@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+
+  server.api:
+    build: .
+    volumes:
+      - './server/:/var/www/html'
+    command: bash -c "npm install && npm run start:debug"
+    ports:
+      - 3000:3000
+      - 9229:9229
+    restart: unless-stopped
+    depends_on:
+      - erp.mysql
+    networks:
+      - erp.network
+
+  client:
+    image: node:16-alpine
+    working_dir: /var/www/html
+    command: npm run serve
+    ports:
+      - 8080:8080
+    restart: unless-stopped
+    volumes:
+      - './client/:/var/www/html'
+    networks:
+      - erp.network
+
+  erp.mysql:
+    image: mysql:8.0
+    container_name: erp.mysql
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./docker/data/db:/var/lib/mysql
+    restart: always
+    networks:
+      - erp.network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3310:3306"
+
+  # mini-erp.postgres:
+  #   image: postgres:10.5
+  #   container_name: mini-erp.postgres
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #   logging:
+  #     options:
+  #       max-size: 10m
+  #       max-file: "3"
+  #   ports:
+  #     - '5438:5432'
+  #   volumes:
+  #     - ./docker/postgres-data:/var/lib/postgresql/data
+  #     # copy the sql script to create tables
+
+  #   networks:
+  #     - mini-erp.network
+
+volumes:
+  erp.mysql:
+
+networks:
+  erp.network:
+    driver: bridge

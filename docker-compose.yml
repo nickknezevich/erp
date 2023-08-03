@@ -7,7 +7,7 @@ services:
     container_name: erp.server
     volumes:
       - './server/:/var/www/html'
-    command: bash -c "npm install && npm start dev && npm prisma generate"
+    command: bash -c "npm start dev"
     ports:
       - 3010:3000
       - 9229:9229
@@ -46,26 +46,6 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3310:3306"
-
-  # mini-erp.postgres:
-  #   image: postgres:10.5
-  #   container_name: mini-erp.postgres
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=${POSTGRES_USER}
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #   logging:
-  #     options:
-  #       max-size: 10m
-  #       max-file: "3"
-  #   ports:
-  #     - '5438:5432'
-  #   volumes:
-  #     - ./docker/postgres-data:/var/lib/postgresql/data
-  #     # copy the sql script to create tables
-
-  #   networks:
-  #     - mini-erp.network
 
 volumes:
   erp.mysql:

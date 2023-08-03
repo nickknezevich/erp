@@ -4,10 +4,10 @@ import { Role } from '../../rbac/role.enum';
 export class CreateUserDto {
   
   @IsNotEmpty()
+  @IsEmail()
   email: string;
 
   @IsNotEmpty()
-  @IsEmail()
   first_name: string;
 
   @IsNotEmpty()

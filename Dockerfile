@@ -8,6 +8,15 @@ RUN apk add bash
 
 #RUN npm cache clean --force && rm -rf node_modules
 
+COPY ./server/prisma ./prisma/
+
+COPY .env ./
+
+COPY ./server/tsconfig.json ./
+
 COPY ./server .
 
-CMD [ "npm", "install" ]
+RUN npm install
+
+RUN npx prisma generate
+RUN npx prisma migrate

@@ -2,13 +2,14 @@ version: '3.8'
 
 services:
 
-  server.api:
+  server:
     build: .
+    container_name: erp.server
     volumes:
       - './server/:/var/www/html'
-    command: bash -c "npm install && npm run start:dev"
+    command: bash -c "npm install && npm start dev && npm prisma generate"
     ports:
-      - 3000:3000
+      - 3010:3000
       - 9229:9229
     restart: unless-stopped
     depends_on:
@@ -16,17 +17,18 @@ services:
     networks:
       - erp.network
 
-  client:
-    image: node:16-alpine
-    working_dir: /var/www/html
-    command: npm run serve
-    ports:
-      - 8080:8080
-    restart: unless-stopped
-    volumes:
-      - './client/:/var/www/html'
-    networks:
-      - erp.network
+  # client:
+  #   image: node:16-alpine
+  #   container_name: erp.client
+  #   working_dir: /var/www/html
+  #   command: "yarn run dev"
+  #   ports:
+  #     - 8000:5173
+  #   restart: unless-stopped
+  #   volumes:
+  #     - './client/erp/:/var/www/html'
+  #   networks:
+  #     - erp.network
 
   erp.mysql:
     image: mysql:8.0
@@ -70,4 +72,7 @@ volumes:
 
 networks:
   erp.network:
-    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.5.0/25

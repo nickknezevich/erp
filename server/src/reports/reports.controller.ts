@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, ParseIntPipe, Query, UseGuards } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { WidgetsResponse } from './responses/widgets.response'
 import { WidgetFilter } from './filters/widget.filter';
+import { AuthGuard } from '@nestjs/passport';
 
+@UseGuards(AuthGuard('jwt'))
 @Controller('reports')
 export class ReportsController {
   

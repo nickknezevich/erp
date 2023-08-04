@@ -36,6 +36,10 @@ Backend will run on http://localhost:3010
 
 ## Available API Endpoints
 
+Test user:
+
+email: test@gmail.com, password: test1234
+
 ```
 /api/auth/register, POST
 ```

@@ -5,6 +5,4 @@ export class CreatePackageDto {
     name: string;
     @IsNotEmpty()
     description: string;
-    @IsNotEmpty()
-    product_id: number;
 }

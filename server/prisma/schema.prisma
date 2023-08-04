@@ -22,42 +22,75 @@ model User {
   roles      Json?    @db.Json()
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  @@map("users")
 }
 
 model Customer {
   id         Int      @id @default(autoincrement())
   name       String   @db.VarChar(255)
-  first_name String?   @db.VarChar(255)
+  first_name String?  @db.VarChar(255)
   last_name  String?  @db.VarChar(255)
   address    String?  @db.VarChar(255)
   zip        Int?
   city       String?  @db.VarChar(255)
+  product_customers ProductCustomer[]
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  @@map("customers")
 }
 
-model Suplier {
-  id         Int      @id @default(autoincrement())
-  name       String   @db.VarChar(255)
-  address    String?  @db.VarChar(255)
-  zip        Int?
-  city       String?  @db.VarChar(255)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  Product    Product?
+model Supplier {
+  id                Int               @id @default(autoincrement())
+  name              String            @db.VarChar(255)
+  address           String?           @db.VarChar(255)
+  zip               Int?
+  city              String?           @db.VarChar(255)
+  product_suppliers ProductSupplier[]
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+
+  @@map("suppliers")
 }
 
 model Product {
-  id           Int       @id @default(autoincrement())
-  name         String    @db.VarChar(255)
-  description  String?   @db.VarChar(255)
-  price        Float
-  suplier      Suplier   @relation(fields: [suplier_id], references: [id])
-  suplier_id   Int       @unique
-  packages     Package[] 
-  inventories  Inventory[]
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
+  id                Int               @id @default(autoincrement())
+  name              String            @db.VarChar(255)
+  description       String?           @db.VarChar(255)
+  price             Float
+  product_suppliers ProductSupplier[]
+  product_packages  ProductPackage[]
+  product_customers ProductCustomer[]
+  inventories       Inventory[]
+  created_at        DateTime          @default(now())
+  updated_at        DateTime          @updatedAt
+
+  @@map("products")
+}
+
+model ProductCustomer {
+  id         Int      @id @default(autoincrement())
+  customer   Customer @relation(fields: [customer_id], references: [id])
+  customer_id Int
+  product    Product  @relation(fields: [product_id], references: [id])
+  product_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("products_customer")
+}
+
+model ProductSupplier {
+  id         Int      @id @default(autoincrement())
+  supplier    Supplier @relation(fields: [supplier_id], references: [id])
+  supplier_id Int
+  product    Product  @relation(fields: [product_id], references: [id])
+  product_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("products_suppliers")
 }
 
 model Inventory {
@@ -68,30 +101,45 @@ model Inventory {
   qty          Float
   min_qty      Float
   warehouse    Warehouse @relation(fields: [warehouse_id], references: [id])
-  warehouse_id Int       @unique
-  product      Product @relation(fields: [product_id], references: [id])
-  product_id Int
+  warehouse_id Int
+  product      Product   @relation(fields: [product_id], references: [id])
+  product_id   Int
   created_at   DateTime  @default(now())
   updated_at   DateTime  @updatedAt
+
+  @@map("inventories")
 }
 
 model Warehouse {
-  id         Int        @id @default(autoincrement())
-  name       String     @unique
-  address    String?    @db.VarChar(255)
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  address    String?     @db.VarChar(255)
   zip        Int?
-  city       String?    @db.VarChar(255)
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
-  inventory  Inventory?
+  city       String?     @db.VarChar(255)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  inventory  Inventory[]
+
+  @@map("warehouses")
 }
 
 model Package {
-  id          Int      @id @default(autoincrement())
-  name        String   @db.VarChar(255)
-  description String?   @db.VarChar(255)
-  product     Product   @relation(fields: [product_id], references: [id])
-  product_id   Int      @default(1)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
+  id               Int              @id @default(autoincrement())
+  name             String           @db.VarChar(255)
+  description      String?          @db.VarChar(255)
+  product_packages ProductPackage[]
+  created_at       DateTime         @default(now())
+  updated_at       DateTime         @updatedAt
+
+  @@map("packages")
+}
+
+model ProductPackage {
+  id         Int     @id @default(autoincrement())
+  package    Package @relation(fields: [package_id], references: [id])
+  package_id Int
+  product    Product @relation(fields: [product_id], references: [id])
+  product_id Int
+
+  @@map("products_packages")
 }

@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:alpine as develop-stage
 
 WORKDIR /var/www/html
 
@@ -8,15 +8,16 @@ RUN apk add bash
 
 #RUN npm cache clean --force && rm -rf node_modules
 
-COPY ./server/prisma ./prisma/
+COPY ./prisma ./prisma/
 
 COPY .env ./
 
-COPY ./server/tsconfig.json ./
+COPY ./tsconfig.json ./
 
-COPY ./server .
+COPY . .
 
 RUN npm install
 
 RUN npx prisma generate
 RUN npx prisma migrate
+

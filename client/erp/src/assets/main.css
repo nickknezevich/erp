@@ -1,0 +1,10 @@
+@media (min-width: 992px){
+.content {
+    padding: 2rem 2rem 1.5rem !important;
+}
+}
+
+a.active.router-link-exact-active.sidebar-link {
+    font-weight: bold;
+    color: #e6e6e6;
+}

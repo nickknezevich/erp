@@ -19,12 +19,12 @@ export class ReportsService {
       let sql = `select
       p.id as pid,
       p.name as product_name,
-      p2.name,
+      p2.name as customer_name,
       c.name,
       p.price,
       s.name as supplier_name,
       i.cost,
-      w.name as warehause_name,
+      w.name as warehouse_name,
       i.qty ,
       i.min_qty
     from

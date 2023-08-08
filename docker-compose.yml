@@ -11,7 +11,7 @@ services:
     volumes:
       - './server/:/var/www/html'
       - /var/www/html/node_modules
-    command: bash -c "npm start debug"
+    command: bash -c "npm start dev"
     ports:
       - 3010:3000
       - 9229:9229
@@ -21,19 +21,21 @@ services:
     networks:
       - erp.network
     
-
-  # client:
-  #   image: node:16-alpine
-  #   container_name: erp.client
-  #   working_dir: /var/www/html
-  #   command: "yarn run dev"
-  #   ports:
-  #     - 8000:5173
-  #   restart: unless-stopped
-  #   volumes:
-  #     - './client/erp/:/var/www/html'
-  #   networks:
-  #     - erp.network
+  client:
+    build:
+      context: ./client/erp
+      target: 'develop-stage'
+      dockerfile: Dockerfile
+    container_name: erp.client
+    ports:
+      - 8000:5173
+    restart: unless-stopped
+    volumes:
+      - './client/erp:/app'
+      - /app/node_modules
+    tty: true
+    networks:
+      - erp.network
 
   erp.mysql:
     image: mysql:8.0

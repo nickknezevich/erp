@@ -53,11 +53,11 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto): Promise<any> {
     const user = await this.usersService.findByLogin(loginUserDto);
-
     return {
       email: user.email,
       roles: user.roles,
-      access_token: this.jwtService.sign(loginUserDto)
+      access_token: this.jwtService.sign(loginUserDto),
+      ...user
     };
   }
 

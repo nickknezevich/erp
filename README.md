@@ -33,6 +33,8 @@ To seed the initial dev data.
 
 Backend will run on http://localhost:3010
 
+Client will run on http://localhost:8000
+
 
 ## Available API Endpoints
 

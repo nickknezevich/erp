@@ -15,26 +15,26 @@ export class SuppliersController {
 
   @Post()
   async create(@Body() createSupplierDto: CreateSupplierDto): Promise<Supplier|HttpException> {
-    return this.suppliersService.create(createSupplierDto);
+    return await this.suppliersService.create(createSupplierDto);
   }
 
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number): Promise<Supplier|HttpException> {
-    return this.suppliersService.findOne(id);
+    return await this.suppliersService.findOne(id);
   }
 
   @Get()
   async findAll(): Promise<Supplier[]> {
-    return this.suppliersService.findAll();
+    return await this.suppliersService.findAll();
   }
 
   @Patch(':id')
   async update(@Param('id', ParseIntPipe) id: number, @Body() updateSupplierDto: UpdateSupplierDto): Promise<Supplier|HttpException> {
-    return this.suppliersService.update(id, updateSupplierDto);
+    return await this.suppliersService.update(id, updateSupplierDto);
   }
 
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number): Promise<Supplier|HttpException> {
-    return this.suppliersService.remove(id);
+    return await this.suppliersService.remove(id);
   }
 }

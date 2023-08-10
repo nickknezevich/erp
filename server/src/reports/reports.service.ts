@@ -54,11 +54,13 @@ export class ReportsService {
         sql = sql.concat(" ", `AND w.id=${filter.warehouse_id}`);
       }
 
-      filter.page = Number(filter.page);
+      if(filter.page) {
+        filter.page = Number(filter.page);
+      }
 
       const resultWithoutPagination = await this.prisma.$queryRaw<WidgetsResponse[]>(Prisma.raw(sql));
 
-      if (filter.page === undefined || filter.page === 0) {
+      if (filter.page === undefined || filter.page === null || filter.page === 1) {
         const offset = 0;
         const limit = filter.num_per_page ?? 10;
         sql = sql.concat(" ", `LIMIT ${limit} OFFSET ${offset}`);
@@ -66,20 +68,22 @@ export class ReportsService {
 
       const totalPages = Math.floor(resultWithoutPagination.length / filter.num_per_page);
 
-      if (filter.page > 0) {
+      if (filter.page > 1) {
         // Calculate OFFSET and LIMIT based on pagination parameters
-        const offset = (filter.page) * filter.num_per_page;
+        const offset = (filter.page-1) * filter.num_per_page;
         const limit = filter.num_per_page;
         sql = sql.concat(" ", `LIMIT ${limit} OFFSET ${offset}`);
       }
 
       const result = await this.prisma.$queryRaw<WidgetsResponse[]>(Prisma.raw(sql));
 
+      console.log(sql)
+
       return {
         report_data: result,
         pagination: {
           total: resultWithoutPagination.length,
-          page: filter.page ?? 0,
+          page: filter.page ?? 1,
           total_pages: totalPages
         }
       };

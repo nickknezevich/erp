@@ -4,6 +4,12 @@ import { connector } from '@/services/connector';
 
 const user = JSON.parse(localStorage.getItem('user'));
 
+const filterParams = {
+    page: undefined,
+    num_per_page: undefined,
+    supplier_id: undefined
+}
+
 export const useWidgetsReportStore = defineStore({
     id: 'reports_widgets',
     state: () => ({
@@ -15,10 +21,10 @@ export const useWidgetsReportStore = defineStore({
         }
     }),
     actions: {
-        async getWidgetsReport(page = undefined, num_per_page = undefined) {
+        async getWidgetsReport(filterParams) {
             this.widgets = { loading: true };
             connector.get('/api/reports/widgets',{
-                params: {page,num_per_page},
+                params: filterParams,
                 headers: {
                     Authorization: `Bearer ${user.access_token}` 
                   }

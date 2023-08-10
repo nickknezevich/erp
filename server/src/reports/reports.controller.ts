@@ -13,7 +13,7 @@ export class ReportsController {
     ) {}
 
   @Get('widgets')
-  async widgets(@Query() query: WidgetFilter): Promise<WidgetsResponse[]|HttpException> {
+  async widgets(@Query() query: WidgetFilter): Promise<ReportResponse|HttpException> {
     return await this.reportsService.widgets(query);
   }
 }

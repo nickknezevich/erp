@@ -18,7 +18,8 @@ async function main() {
             full_name: "John Smith",
             email:  "test@gmail.com",
             password: hashedPassword,
-            token: ''
+            token: '',
+            picture: 'https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200'
         },
     })
 

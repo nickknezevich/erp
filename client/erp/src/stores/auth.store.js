@@ -14,6 +14,7 @@ export const useAuthStore = defineStore({
     actions: {
         async login(username, password) {
             const authData = await connector.post(`/api/auth/login`, { username, password });
+            console.log("AUTH DATA", authData)
             // update pinia state
             this.user = authData.data.data;
             this.isAuthenticated = true;

@@ -32,18 +32,18 @@ const previousPage = () => {
 
 
 const nextPage = () => {
-  
+
   page.value++
   if (pagination.value.total_pages === parseInt(page.value)) {
     nextDisabled.value = true;
   } else {
     nextDisabled.value = false;
   }
-  
+
   router.push({ path: 'reports', query: { page: page.value } })
   store.getWidgetsReport(page.value, num_per_page.value);
   previousDisabled.value = false;
-  
+
 }
 
 onMounted(async () => {
@@ -119,4 +119,44 @@ const fields = [
 .table-pagination {
   margin-right: 15px;
 }
-</style>
+
+ul.pagination {
+  float: right;
+}
+
+.page-item {
+  display: inline-block;
+  margin: 0 2px;
+  /* Adjust spacing between pagination items */
+}
+
+.page-link {
+  padding: 0.5rem 0.75rem;
+  /* Adjust padding for a more comfortable click area */
+  border-radius: 0.25rem;
+  /* Rounded corners */
+}
+
+.page-link:hover {
+  background-color: #f8f9fa;
+  /* Hover background color */
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  /* Disabled text color */
+  background-color: #fff;
+  /* Disabled background color */
+  border-color: #dee2e6;
+  /* Disabled border color */
+}
+
+.page-item.active .page-link {
+  z-index: 1;
+  color: #fff;
+  /* Active text color */
+  background-color: #007bff;
+  /* Active background color */
+  border-color: #007bff;
+  /* Active border color */
+}</style>

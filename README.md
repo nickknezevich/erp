@@ -1,5 +1,5 @@
 # mini-erp
-Mini and rather simplified ERP api which should administer customers, products, inventories, warehoses
+Mini and rather simplified ERP api which should administer customers, products, inventories, warehoses. WIP
 
 ## Instalation
 
@@ -35,6 +35,7 @@ Backend will run on http://localhost:3010
 
 Client will run on http://localhost:8000
 
+![Screenshot](erp_client.png)
 
 ## Available API Endpoints
 

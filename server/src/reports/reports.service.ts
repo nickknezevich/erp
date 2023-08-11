@@ -66,7 +66,8 @@ export class ReportsService {
         sql = sql.concat(" ", `LIMIT ${limit} OFFSET ${offset}`);
       }
 
-      const totalPages = Math.floor(resultWithoutPagination.length / filter.num_per_page);
+      const totalPages = Math.floor(resultWithoutPagination.length / filter.num_per_page) +
+                  (resultWithoutPagination.length % filter.num_per_page === 0 ? 0 : 1);
 
       if (filter.page > 1) {
         // Calculate OFFSET and LIMIT based on pagination parameters

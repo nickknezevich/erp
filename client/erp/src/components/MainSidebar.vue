@@ -15,8 +15,11 @@
                 <li class="sidebar-item">
                     <router-link to="/" class="sidebar-link"><i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span></router-link>
                 </li>
+                <li class="sidebar-header">
+                    Reports
+                </li>
                 <li class="sidebar-item">
-                    <router-link to="/reports" class="sidebar-link"><i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Reports</span></router-link>
+                    <router-link to="/reports" class="sidebar-link"><i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Widget Report</span></router-link>
                 </li>
 
             </ul>

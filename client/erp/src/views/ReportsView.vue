@@ -50,7 +50,7 @@ const previousPage = () => {
 
 const nextPage = () => {
   page.value++
-  console.log(pagination.value.total_pages, route.query.page)
+  console.log(pagination.value.total_pages, page.value)
   if (pagination.value.total_pages === parseInt(page.value)) {
     nextDisabled.value = true;
   } else {
@@ -213,6 +213,7 @@ ul.pagination {
   /* Disabled background color */
   border-color: #dee2e6;
   /* Disabled border color */
+  pointer-events: none;
 }
 
 .page-item.active .page-link {
